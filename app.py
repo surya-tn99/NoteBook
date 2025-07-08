@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory, abort
-from modules.db import init_db, add_node, update_node, delete_node, get_connection
+from modules.db import init_db, add_node, delete_node, get_connection
 import os
 
 app = Flask(__name__)
