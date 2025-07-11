@@ -114,19 +114,23 @@
     fill: #ffffff;
 }
 
-    @media (max-width: 768px) {
-      .button-group button svg {
-        fill: #202124;
-      }
-    }
   </style>
 </head>
 
 <body>
 
   <header>
-    <h1>haiHelloVanakam</h1>
+    <h1 id="heading"> 
+      <!-- file name will be displayed -->
+    </h1>
     <div class="button-group">
+      <!-- back button -->
+
+      <button title="Home" onclick="window.location.href = '/'">
+        <svg fill="#ffffff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 547.596 547.596" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> 
+        <path d="M540.76,254.788L294.506,38.216c-11.475-10.098-30.064-10.098-41.386,0L6.943,254.788 c-11.475,10.098-8.415,18.284,6.885,18.284h75.964v221.773c0,12.087,9.945,22.108,22.108,22.108h92.947V371.067 c0-12.087,9.945-22.108,22.109-22.108h93.865c12.239,0,22.108,9.792,22.108,22.108v145.886h92.947 c12.24,0,22.108-9.945,22.108-22.108v-221.85h75.965C549.021,272.995,552.081,264.886,540.76,254.788z"></path> </g> </g></svg>
+      </button>
+      
       <!-- Edit Button -->
       <button id="editBtn" title="Edit">
 
@@ -179,19 +183,55 @@
       preview.innerHTML = marked.parse(content);
     }
 
-    fetch("test.md")
+	const params = new URLSearchParams(window.location.search);
+	// console.log(window.location.href);
+	const fileName = params.get("name");
+	console.log(fileName);
+
+  document.getElementById("heading").textContent = fileName;
+  
+    fetch(`markdownFiles/${fileName}.md`)
       .then(res => res.text())
       .then(md => updatePreview(md))
       .catch(err => console.error("Error loading markdown:", err));
 
     document.getElementById("editBtn").addEventListener("click", () => {
-      alert("Edit clicked!");
+      // alert("Edit clicked!");
+	  window.location.href = `editNotes.html?name=${fileName}`;
     });
 
     document.getElementById("deleteBtn").addEventListener("click", () => {
-      alert("Delete clicked!");
+      // alert("Delete clicked!");
+	  fetch("http://127.0.0.1:1234/delete" ,{
+			method : "POST",
+			headers : {
+				"Content-Type":"text/plain"
+				},
+			body: fileName
+		})
+	  	.then(res=>{
+        if(!res.ok){
+          throw new Error("error at response");
+        }
+        return res.text()})
+		.then(msg=>{
+      
+      if(msg=="deleted"){
+				// console.log("deleted successfully");
+        window.location.href = '/';
+			}
+			else if(msg == "not deleted"){
+				alert("can't be deleted");
+			}
+		})
+		.catch(err=>{
+			console.error(err);
+		})
+	  	
     });
+
   </script>
 
 </body>
 </html>
+

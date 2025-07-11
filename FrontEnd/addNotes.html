@@ -30,10 +30,12 @@
       align-items: center;
       padding: 12px 24px;
       background-color: #dbe9f4;
+      color: #202124;
       border-bottom: 1px solid #cadbe8;
       box-shadow: 0 1px 2px rgba(60, 64, 67, 0.1);
     }
 
+    
     #editable-heading {
       font-size: 1.4rem;
       font-weight: 500;
@@ -70,7 +72,13 @@
     .button-group button svg {
       display: none;
     }
-
+    .button-group button #home-svg{
+      display: block;
+    
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+    }
     .button-group button:hover {
       background-color: #1a3d68;
     }
@@ -189,6 +197,11 @@
   <header>
     <input id="editable-heading" type="text" value="Untitled" />
     <div class="button-group">
+     
+      <button title="Home" onclick="window.location.href = 'https://www.google.com'">
+        <svg id="home-svg" fill="#ffffff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 547.596 547.596" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> 
+        <path d="M540.76,254.788L294.506,38.216c-11.475-10.098-30.064-10.098-41.386,0L6.943,254.788 c-11.475,10.098-8.415,18.284,6.885,18.284h75.964v221.773c0,12.087,9.945,22.108,22.108,22.108h92.947V371.067 c0-12.087,9.945-22.108,22.109-22.108h93.865c12.239,0,22.108,9.792,22.108,22.108v145.886h92.947 c12.24,0,22.108-9.945,22.108-22.108v-221.85h75.965C549.021,272.995,552.081,264.886,540.76,254.788z"></path> </g> </g></svg>
+      </button>
       <button class="add">
         <span>Add</span>
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -220,77 +233,104 @@
       <article id="preview" class="markdown-body"></article>
     </div>
   </div>
+<script>
+  const textarea = document.getElementById("md");
+  const preview = document.getElementById("preview");
 
-  <script>
-    const textarea = document.getElementById("md");
-    const preview = document.getElementById("preview");
+  function addPreview() {
+    preview.innerHTML = marked.parse(textarea.value || "");
+  }
 
-    function addPreview() {
-      preview.innerHTML = marked.parse(textarea.value || "");
+  addPreview();
+  textarea.addEventListener("input", addPreview);
+
+  textarea.addEventListener("keydown", function (e) {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const start = this.selectionStart;
+      const end = this.selectionEnd;
+      this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
+      this.selectionStart = this.selectionEnd = start + 1;
+      addPreview();
+    }
+  });
+
+  // 🔁 HOME button -> redirect to "/"
+  document.querySelector("[title='Home']").addEventListener("click", () => {
+    window.location.href = "/";
+  });
+
+  // 🔁 CANCEL button -> redirect to "/"
+  document.querySelector(".cancel").addEventListener("click", () => {
+    window.location.href = "/";
+  });
+
+  // ✅ ADD button -> save file
+  document.querySelector(".add").addEventListener("click", () => {
+    const fileName = document.getElementById("editable-heading").value.trim();
+    const content = textarea.value.trim();
+
+    if (!fileName) {
+      alert("Please enter a filename.");
+      return;
     }
 
-    addPreview();
+    fetch("http://127.0.0.1:1234/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ filename: fileName, content: content })
+    })
+      .then(res => res.text())
+      .then(msg => {
+        // alert(msg);
+        window.location.href = `/viewNotes.html?name=${encodeURIComponent(fileName)}`;
+      })
+      .catch(err => {
+        console.error("Error saving file:", err);
+        alert("Failed to save the note.");
+      });
+  });
 
-    textarea.addEventListener("input", addPreview);
+  // 🖱️ Resizer (unchanged)
+  const resizer = document.getElementById("resizer");
+  const left = document.getElementById("left");
+  const right = document.getElementById("right");
+  const container = document.querySelector(".container");
+  let isDragging = false;
 
-    textarea.addEventListener("keydown", function (e) {
-      if (e.key === "Tab") {
-        e.preventDefault();
-        const start = this.selectionStart;
-        const end = this.selectionEnd;
-        this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
-        this.selectionStart = this.selectionEnd = start + 1;
-        addPreview();
-      }
-    });
+  resizer.addEventListener("mousedown", function (e) {
+    e.preventDefault();
+    isDragging = true;
+  });
 
-    document.querySelector(".add").addEventListener("click", () => {
-      alert("add clicked!");
-    });
+  window.addEventListener("mousemove", function (e) {
+    if (!isDragging) return;
 
-    document.querySelector(".cancel").addEventListener("click", () => {
-      alert("Cancel clicked!");
-    });
+    const isVertical = window.innerWidth <= 768;
 
-    const resizer = document.getElementById("resizer");
-    const left = document.getElementById("left");
-    const right = document.getElementById("right");
-    const container = document.querySelector(".container");
-    let isDragging = false;
+    if (isVertical) {
+      const containerHeight = container.offsetHeight;
+      const topHeight = containerHeight - (e.clientY - container.getBoundingClientRect().top);
 
-    resizer.addEventListener("mousedown", function (e) {
-      e.preventDefault();
-      isDragging = true;
-    });
+      if (topHeight < 100 || containerHeight - topHeight < 100) return;
 
-    window.addEventListener("mousemove", function (e) {
-      if (!isDragging) return;
+      left.style.height = `${topHeight}px`;
+      right.style.height = `${containerHeight - topHeight - resizer.offsetHeight}px`;
+    } else {
+      const containerWidth = container.offsetWidth;
+      const leftWidth = e.clientX - container.getBoundingClientRect().left;
 
-      const isVertical = window.innerWidth <= 768;
+      if (leftWidth < 100 || containerWidth - leftWidth < 100) return;
 
-      if (isVertical) {
-        const containerHeight = container.offsetHeight;
-        const topHeight = containerHeight - (e.clientY - container.getBoundingClientRect().top);
+      left.style.width = `${leftWidth}px`;
+      right.style.width = `${containerWidth - leftWidth - resizer.offsetWidth}px`;
+    }
+  });
 
-        if (topHeight < 100 || containerHeight - topHeight < 100) return;
-
-        left.style.height = `${topHeight}px`;
-        right.style.height = `${containerHeight - topHeight - resizer.offsetHeight}px`;
-      } else {
-        const containerWidth = container.offsetWidth;
-        const leftWidth = e.clientX - container.getBoundingClientRect().left;
-
-        if (leftWidth < 100 || containerWidth - leftWidth < 100) return;
-
-        left.style.width = `${leftWidth}px`;
-        right.style.width = `${containerWidth - leftWidth - resizer.offsetWidth}px`;
-      }
-    });
-
-    window.addEventListener("mouseup", function () {
-      isDragging = false;
-    });
-  </script>
+  window.addEventListener("mouseup", function () {
+    isDragging = false;
+  });
+</script>
 
 </body>
 </html>
