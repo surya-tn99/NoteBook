@@ -80,4 +80,4 @@ def deleteFile():
         return "not deleted"
 
 if __name__ == "__main__":
-    server.run(port = 1234 , debug = True)
+    server.run(port = 1234)

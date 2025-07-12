@@ -4,192 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Markdown adder</title>
+  <title>Add Notes</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+  <link rel="stylesheet" href="css/addNotes.css">
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      height: 100%;
-      font-family: "Google Sans", Roboto, Arial, sans-serif;
-      background-color: #ffffff;
-      color: #24292f;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 24px;
-      background-color: #dbe9f4;
-      color: #202124;
-      border-bottom: 1px solid #cadbe8;
-      box-shadow: 0 1px 2px rgba(60, 64, 67, 0.1);
-    }
-
-    
-    #editable-heading {
-      font-size: 1.4rem;
-      font-weight: 500;
-      border: none;
-      background: transparent;
-      outline: none;
-      font-family: inherit;
-      color: #202124;
-      width: auto;
-      max-width: 100%;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 10px;
-    }
-
-    .button-group button {
-      padding: 8px 16px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      box-shadow: 0 1px 2px rgba(60, 64, 67, 0.15);
-      background-color: #4386c9;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .button-group button svg {
-      display: none;
-    }
-    .button-group button #home-svg{
-      display: block;
-    
-        width: 20px;
-        height: 20px;
-        fill: currentColor;
-    }
-    .button-group button:hover {
-      background-color: #1a3d68;
-    }
-
-    .container {
-      display: flex;
-      height: calc(100vh - 65px);
-      width: 100%;
-      background-color: #f7f8f8;
-    }
-
-    .left, .right {
-      overflow-y: auto;
-    }
-
-    .left {
-      background-color: #f7f8f8;
-      border-right: 1px solid #d0d7de;
-    }
-
-    .right {
-      background-color: #f7f8f8;
-      color: #24292f;
-    }
-
-    textarea {
-      width: 100%;
-      height: calc(100% - 48px);
-      font-size: 1rem;
-      padding: 20px;
-      font-family: inherit;
-      resize: none;
-      border: none;
-      background: transparent;
-      outline: none;
-      line-height: 1.5;
-    }
-
-    .markdown-body {
-      background-color: #f7f8f8;
-      color: #24292f;
-      font-size: 1rem;
-      line-height: 1.6;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .markdown-body table,
-    .markdown-body th,
-    .markdown-body td {
-      background-color: #f7f8f8;
-    }
-
-    .markdown-body pre {
-      background-color: #4386c9;
-    }
-
-    .resizer {
-      width: 5px;
-      cursor: col-resize;
-      background-color: #e1e4e8;
-    }
-
-    .section-title {
-      padding: 8px 16px;
-      font-weight: 500;
-      font-size: 1.2rem;
-      background-color: #f8f9fa;
-      color: #5f6368;
-      border-bottom: 1px solid #dadce0;
-      border-top: 1px solid #e0e0e0;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column-reverse;
-      }
-
-      .left, .right {
-        width: 100% !important;
-        height: 50%;
-      }
-
-      .resizer {
-        width: 100%;
-        height: 5px;
-        cursor: row-resize;
-        background-color: #36495c;
-      }
-
-      .button-group button {
-        width: 42px;
-        height: 42px;
-        padding: 8px;
-        font-size: 0;
-        border-radius: 50%;
-      }
-
-      .button-group button svg {
-        display: block;
-        width: 20px;
-        height: 20px;
-        fill: currentColor;
-      }
-
-      .button-group .add::after,
-      .button-group .cancel::after {
-        display: none;
-      }
-    }
-  </style>
 </head>
 
 <body>
@@ -197,17 +17,30 @@
   <header>
     <input id="editable-heading" type="text" value="Untitled" />
     <div class="button-group">
-     
-      <button title="Home" onclick="window.location.href = 'https://www.google.com'">
-        <svg id="home-svg" fill="#ffffff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 547.596 547.596" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> 
-        <path d="M540.76,254.788L294.506,38.216c-11.475-10.098-30.064-10.098-41.386,0L6.943,254.788 c-11.475,10.098-8.415,18.284,6.885,18.284h75.964v221.773c0,12.087,9.945,22.108,22.108,22.108h92.947V371.067 c0-12.087,9.945-22.108,22.109-22.108h93.865c12.239,0,22.108,9.792,22.108,22.108v145.886h92.947 c12.24,0,22.108-9.945,22.108-22.108v-221.85h75.965C549.021,272.995,552.081,264.886,540.76,254.788z"></path> </g> </g></svg>
+
+      <button title="Home" onclick="window.location.href = '/'">
+        <svg id="home-svg" fill="#ffffff" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 547.596 547.596" xml:space="preserve">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <g>
+              <path
+                d="M540.76,254.788L294.506,38.216c-11.475-10.098-30.064-10.098-41.386,0L6.943,254.788 c-11.475,10.098-8.415,18.284,6.885,18.284h75.964v221.773c0,12.087,9.945,22.108,22.108,22.108h92.947V371.067 c0-12.087,9.945-22.108,22.109-22.108h93.865c12.239,0,22.108,9.792,22.108,22.108v145.886h92.947 c12.24,0,22.108-9.945,22.108-22.108v-221.85h75.965C549.021,272.995,552.081,264.886,540.76,254.788z">
+              </path>
+            </g>
+          </g>
+        </svg>
       </button>
       <button class="add">
         <span>Add</span>
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 10H10.5C11.3284 10 12 9.32843 12 8.5V4" stroke="currentColor" stroke-width="1.5"/>
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M9.85355 3.73223C10.3224 3.26339 10.9583 3 11.6213 3H16.5C17.8807 3 19 4.11929 19 5.5V18.5C19 19.8807 17.8807 21 16.5 21H7.5C6.11929 21 5 19.8807 5 18.5V9.62132C5 8.95828 5.26339 8.3224 5.73223 7.85355L9.85355 3.73223ZM11.6213 5C11.4887 5 11.3615 5.05268 11.2678 5.14645L7.14645 9.26777C7.05268 9.36154 7 9.48871 7 9.62132V18.5C7 18.7761 7.22386 19 7.5 19H16.5C16.7761 19 17 18.7761 17 18.5V5.5C17 5.22386 16.7761 5 16.5 5H11.6213Z" fill="#ffffff"/>
-          <path d="M10 14.5H14M12 12.5V16.5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M6 10H10.5C11.3284 10 12 9.32843 12 8.5V4" stroke="currentColor" stroke-width="1.5" />
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M9.85355 3.73223C10.3224 3.26339 10.9583 3 11.6213 3H16.5C17.8807 3 19 4.11929 19 5.5V18.5C19 19.8807 17.8807 21 16.5 21H7.5C6.11929 21 5 19.8807 5 18.5V9.62132C5 8.95828 5.26339 8.3224 5.73223 7.85355L9.85355 3.73223ZM11.6213 5C11.4887 5 11.3615 5.05268 11.2678 5.14645L7.14645 9.26777C7.05268 9.36154 7 9.48871 7 9.62132V18.5C7 18.7761 7.22386 19 7.5 19H16.5C16.7761 19 17 18.7761 17 18.5V5.5C17 5.22386 16.7761 5 16.5 5H11.6213Z"
+            fill="#ffffff" />
+          <path d="M10 14.5H14M12 12.5V16.5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
       </button>
       <button class="cancel">
@@ -233,104 +66,8 @@
       <article id="preview" class="markdown-body"></article>
     </div>
   </div>
-<script>
-  const textarea = document.getElementById("md");
-  const preview = document.getElementById("preview");
 
-  function addPreview() {
-    preview.innerHTML = marked.parse(textarea.value || "");
-  }
-
-  addPreview();
-  textarea.addEventListener("input", addPreview);
-
-  textarea.addEventListener("keydown", function (e) {
-    if (e.key === "Tab") {
-      e.preventDefault();
-      const start = this.selectionStart;
-      const end = this.selectionEnd;
-      this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
-      this.selectionStart = this.selectionEnd = start + 1;
-      addPreview();
-    }
-  });
-
-  // 🔁 HOME button -> redirect to "/"
-  document.querySelector("[title='Home']").addEventListener("click", () => {
-    window.location.href = "/";
-  });
-
-  // 🔁 CANCEL button -> redirect to "/"
-  document.querySelector(".cancel").addEventListener("click", () => {
-    window.location.href = "/";
-  });
-
-  // ✅ ADD button -> save file
-  document.querySelector(".add").addEventListener("click", () => {
-    const fileName = document.getElementById("editable-heading").value.trim();
-    const content = textarea.value.trim();
-
-    if (!fileName) {
-      alert("Please enter a filename.");
-      return;
-    }
-
-    fetch("http://127.0.0.1:1234/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ filename: fileName, content: content })
-    })
-      .then(res => res.text())
-      .then(msg => {
-        // alert(msg);
-        window.location.href = `/viewNotes.html?name=${encodeURIComponent(fileName)}`;
-      })
-      .catch(err => {
-        console.error("Error saving file:", err);
-        alert("Failed to save the note.");
-      });
-  });
-
-  // 🖱️ Resizer (unchanged)
-  const resizer = document.getElementById("resizer");
-  const left = document.getElementById("left");
-  const right = document.getElementById("right");
-  const container = document.querySelector(".container");
-  let isDragging = false;
-
-  resizer.addEventListener("mousedown", function (e) {
-    e.preventDefault();
-    isDragging = true;
-  });
-
-  window.addEventListener("mousemove", function (e) {
-    if (!isDragging) return;
-
-    const isVertical = window.innerWidth <= 768;
-
-    if (isVertical) {
-      const containerHeight = container.offsetHeight;
-      const topHeight = containerHeight - (e.clientY - container.getBoundingClientRect().top);
-
-      if (topHeight < 100 || containerHeight - topHeight < 100) return;
-
-      left.style.height = `${topHeight}px`;
-      right.style.height = `${containerHeight - topHeight - resizer.offsetHeight}px`;
-    } else {
-      const containerWidth = container.offsetWidth;
-      const leftWidth = e.clientX - container.getBoundingClientRect().left;
-
-      if (leftWidth < 100 || containerWidth - leftWidth < 100) return;
-
-      left.style.width = `${leftWidth}px`;
-      right.style.width = `${containerWidth - leftWidth - resizer.offsetWidth}px`;
-    }
-  });
-
-  window.addEventListener("mouseup", function () {
-    isDragging = false;
-  });
-</script>
-
+  <script src="js/add.js"></script>
 </body>
+
 </html>

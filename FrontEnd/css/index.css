@@ -1,0 +1,118 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: "Google Sans", Roboto, Arial, sans-serif;
+    background-color: #ffffff;
+    color: #202124;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: #dbe9f4;
+    border-bottom: 1px solid #cadbe8;
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.1);
+}
+
+header h1 {
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+.container {
+    padding: 20px;
+}
+
+.file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.file-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #f0f4f8;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.file-list li:hover {
+    background-color: #c9def1;
+}
+
+.file-list li a {
+    text-decoration: none;
+    color: #1a3d68;
+    font-weight: 500;
+    font-size: 1.05rem;
+}
+
+.actions {
+    display: none;
+    gap: 10px;
+}
+
+.file-list li:hover .actions {
+    display: flex;
+}
+
+.actions button {
+    background-color: #1a3d68;
+    border: 1px solid #1a3d68;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.actions button:hover {
+    background-color: #1b314b;
+}
+.add-note-btn {
+background-color: #1a3d68;
+border: none;
+padding: 10px 14px;
+border-radius: 6px;
+cursor: pointer;
+transition: background-color 0.2s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.add-note-btn:hover {
+background-color: #2a4d82;
+}
+
+@media (max-width: 768px) {
+    header h1 {
+    font-size: 1.2rem;
+    }
+
+    .file-list li {
+    font-size: 0.95rem;
+    flex-direction: column;
+    align-items: flex-start;
+    }
+
+    .actions {
+    margin-top: 8px;
+    display: flex !important;
+    }
+}

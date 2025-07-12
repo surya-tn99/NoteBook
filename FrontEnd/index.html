@@ -4,142 +4,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Markdown Files</title>
+  <title>NoteBook</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html,
-    body {
-      height: 100%;
-      font-family: "Google Sans", Roboto, Arial, sans-serif;
-      background-color: #ffffff;
-      color: #202124;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 24px;
-      background-color: #dbe9f4;
-      border-bottom: 1px solid #cadbe8;
-      box-shadow: 0 1px 2px rgba(60, 64, 67, 0.1);
-    }
-
-    header h1 {
-      font-size: 1.4rem;
-      font-weight: 500;
-    }
-
-    .container {
-      padding: 20px;
-    }
-
-    .file-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .file-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      background-color: #f0f4f8;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      transition: background-color 0.2s ease;
-      cursor: pointer;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .file-list li:hover {
-      background-color: #c9def1;
-    }
-
-    .file-list li a {
-      text-decoration: none;
-      color: #1a3d68;
-      font-weight: 500;
-      font-size: 1.05rem;
-    }
-
-    .actions {
-      display: none;
-      gap: 10px;
-    }
-
-    .file-list li:hover .actions {
-      display: flex;
-    }
-
-    .actions button {
-      background-color: #1a3d68;
-      border: 1px solid #1a3d68;
-      color: white;
-      padding: 5px 10px;
-      font-size: 0.9rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .actions button:hover {
-      background-color: #1b314b;
-    }
-.add-note-btn {
-  background-color: #1a3d68;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.add-note-btn:hover {
-  background-color: #2a4d82;
-}
-
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 1.2rem;
-      }
-
-      .file-list li {
-        font-size: 0.95rem;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .actions {
-        margin-top: 8px;
-        display: flex !important;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="css/index.css">
 </head>
 
 <body>
   <header>
-    <h1>📂 Your Markdown Notes</h1>
+    <h1>📂 NoteBook</h1>
     <button class="add-note-btn" title="Add Note" onclick="location.href='addNotes.html'">
-  <svg fill="#ffffff" width="24" height="24" viewBox="0 0 24 24"
-    xmlns="http://www.w3.org/2000/svg">
-    <path d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z" />
-  </svg>
-</button>
+      <svg fill="#ffffff" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z" />
+      </svg>
+    </button>
 
   </header>
 
@@ -149,83 +28,7 @@
     </ul>
   </div>
 
-  <script>
-    fetch("http://127.0.0.1:1234/files")
-      .then(res => res.json())
-      .then(data => {
-        const fileList = document.getElementById("fileList");
-        if (data.error) {
-          fileList.innerHTML = `<li>Error: ${data.error}</li>`;
-          return;
-        }
-
-        if (data.length === 0) {
-          fileList.innerHTML = `<li>No markdown files found.</li>`;
-          return;
-        }
-
-        data.forEach(file => {
-          const li = document.createElement("li");
-
-          li.innerHTML = `
-            <a href="viewNotes.html?name=${encodeURIComponent(file)}">${file}</a>
-            <div class="actions">
-              <button onclick="viewNote('${file}')">View</button>
-              <button onclick="renameNote('${file}')">Rename</button>
-              <button onclick="deleteNote('${file}')">Delete</button>
-            </div>
-          `;
-
-          fileList.appendChild(li);
-        });
-      })
-      .catch(err => {
-        console.error("Error fetching file list:", err);
-        document.getElementById("fileList").innerHTML = `<li>Failed to load file list.</li>`;
-      });
-
-    function viewNote(name) {
-      window.location.href = `viewNotes.html?name=${encodeURIComponent(name)}`;
-    }
-
-    function renameNote(oldName) {
-      const newName = prompt("Enter new name (without .md):", oldName);
-      if (!newName || newName.trim() === "") return;
-
-      fetch("http://127.0.0.1:1234/rename", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ old: oldName, new: newName })
-      })
-        .then(res => res.text())
-        .then(msg => {
-          // alert(msg);
-          location.reload();
-        })
-        .catch(err => {
-          console.error("Rename error:", err);
-          alert("Failed to rename.");
-        });
-    }
-
-    function deleteNote(name) {
-      if (!confirm(`Delete "${name}"?`)) return;
-
-      fetch("http://127.0.0.1:1234/delete", {
-        method: "POST",
-        body: name
-      })
-        .then(res => res.text())
-        .then(msg => {
-          // alert(msg);
-          location.reload();
-        })
-        .catch(err => {
-          console.error("Delete error:", err);
-          alert("Failed to delete.");
-        });
-    }
-  </script>
+  <script src="js/index.js"></script>
 </body>
 
 </html>

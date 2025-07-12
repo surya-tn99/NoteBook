@@ -4,196 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Markdown Editor</title>
+  <title>Edit Notes</title>
 
   <!-- GitHub Markdown CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/editNotes.css">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  height: 100%;
-  font-family: "Google Sans", Roboto, Arial, sans-serif;
-  background-color: #ffffff;
-  color: #24292f;
-}
-
-/* ========== HEADER ========== */
-header {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background-color: #dbe9f4;
-  border-bottom: 1px solid #cadbe8;
-  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.1);
-  gap: 10px;
-  overflow-x: hidden;
-}
-
-#editable-heading {
-  flex: 1 1 auto;
-  min-width: 0;
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: #202124;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-family: inherit;
-  width: auto;
-  max-width: 100%;
-}
-
-.button-group {
-  flex-shrink: 0;
-  display: flex;
-  gap: 10px;
-}
-
-.button-group button {
-  padding: 8px 16px;
-  font-size: 0.95rem;
-  font-family: inherit;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.15);
-  background-color: #4386c9;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.button-group button:hover {
-  background-color: #1a3d68;
-}
-
-.button-group button svg {
-  display: none;
-}
-
-/* ========== CONTAINER ========== */
-.container {
-  display: flex;
-  height: calc(100vh - 65px);
-  width: 100%;
-  background-color: #f7f8f8;
-}
-
-.left, .right {
-  height: 100%;
-  overflow-y: auto;
-}
-
-.left {
-  background-color: #f7f8f8;
-  border-right: 1px solid #d0d7de;
-}
-
-.right {
-  background-color: #f7f8f8;
-  color: #24292f;
-}
-
-/* ========== TEXTAREA ========== */
-textarea {
-  width: 100%;
-  height: calc(100% - 48px);
-  font-size: 1rem;
-  padding: 20px;
-  font-family: inherit;
-  resize: none;
-  border: none;
-  background: transparent;
-  outline: none;
-  line-height: 1.5;
-}
-
-/* ========== MARKDOWN PREVIEW ========== */
-.markdown-body {
-  background-color: #f7f8f8;
-  color: #24292f;
-  font-size: 1rem;
-  line-height: 1.6;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.markdown-body table,
-.markdown-body th,
-.markdown-body td {
-  background-color: #f7f8f8;
-}
-
-/* ========== RESIZER ========== */
-.resizer {
-  width: 5px;
-  cursor: col-resize;
-  background-color: #e1e4e8;
-  height: 100%;
-}
-
-/* ========== SECTION TITLE ========== */
-.section-title {
-  padding: 8px 16px;
-  font-weight: 500;
-  font-size: 1.2rem;
-  background-color: #f8f9fa;
-  color: #5f6368;
-  border-bottom: 1px solid #dadce0;
-  border-top: 1px solid #e0e0e0;
-}
-
-/* ========== MOBILE VIEW FIX ========== */
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column-reverse;
-  }
-
-  .left, .right {
-    width: 100% !important;
-    height: 50%;
-  }
-
-  .resizer {
-    width: 100%;
-    height: 5px;
-    cursor: row-resize;
-    background-color: #36495c;
-  }
-
-  .button-group button {
-    width: 42px;
-    height: 42px;
-    padding: 8px;
-    font-size: 0;
-    border-radius: 50%;
-  }
-
-  .button-group button svg {
-    display: block;
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-  }
-
-  .button-group .update::after,
-  .button-group .cancel::after {
-    display: none;
-  }
-}
-  </style>
 </head>
 
 <body>
@@ -201,11 +19,11 @@ textarea {
   <header>
     <!-- <h1>haiHelloVanakam</h1> -->
     <!-- <input  type="text" value="haiHelloVanakam" /> -->
-<h1 id="editable-heading"> 
+    <h1 id="editable-heading">
       <!-- file name will be displayed -->
-</h1>
+    </h1>
 
-  <div class="button-group">
+    <div class="button-group">
       <button class="update" title="Update">
         <span>Update</span>
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -239,105 +57,7 @@ textarea {
       <article id="preview" class="markdown-body"></article>
     </div>
   </div>
-
-  <script>
-    const textarea = document.getElementById("md");
-    const preview = document.getElementById("preview");
-
-    function updatePreview() {
-      preview.innerHTML = marked.parse(textarea.value);
-    }
-
-    const params = new URLSearchParams(window.location.search);
-    const fileName = params.get("name");
-
-  document.getElementById("editable-heading").innerText = fileName;
-  
-  fetch(`markdownFiles/${fileName}.md?v=${Date.now()}`)
-      .then(res => res.text())
-      .then(md => {
-        textarea.value = md;
-        updatePreview();
-      })
-      .catch(err => console.error("Error loading markdown:", err));
-
-    textarea.addEventListener("input", updatePreview);
-
-    textarea.addEventListener("keydown", function (e) {
-      if (e.key === "Tab") {
-        e.preventDefault();
-        const start = this.selectionStart;
-        const end = this.selectionEnd;
-        this.value = this.value.substring(0, start) + "\t" + this.value.substring(end);
-        this.selectionStart = this.selectionEnd = start + 1;
-        updatePreview();
-      }
-    });
-
-    document.querySelector(".update").addEventListener("click", () => {
-      // alert("Update clicked!");
-    // const NewfileName = document.getElementById("editable-heading").value;
-  document.getElementById("editable-heading").textContent = fileName;
-      fetch("http://127.0.0.1:1234/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          filename : fileName,
-          content : textarea.value
-        })
-      })
-        .then(res => res.text())
-        .then(msg => {
-          if (msg == "updated") {
-            console.log("updated successfully");
-            window.location.href = `viewNotes.html?name=${fileName}`;
-    
-          }
-          else {
-            alert("can't be updated");
-          }
-        })
-        .catch(err => {
-          console.error(err);
-        });
-
-    });
-
-    document.querySelector(".cancel").addEventListener("click", () => {
-      // alert("Cancel clicked!");
-      window.location.href = `viewNotes.html?name=${fileName}`;
-    });
-
-    const resizer = document.getElementById("resizer");
-    const left = document.getElementById("left");
-    const right = document.getElementById("right");
-    let isDragging = false;
-
-    resizer.addEventListener("mousedown", function (e) {
-      e.preventDefault();
-      isDragging = true;
-    });
-
-    window.addEventListener("mousemove", function (e) {
-      if (!isDragging) return;
-
-      const containerWidth = document.querySelector(".container").offsetWidth;
-      const leftWidth = e.clientX;
-      const rightWidth = containerWidth - leftWidth - resizer.offsetWidth;
-
-      if (leftWidth < 100 || rightWidth < 100) return;
-
-      left.style.width = `${leftWidth}px`;
-      right.style.width = `${rightWidth}px`;
-    });
-
-    window.addEventListener("mouseup", function () {
-      isDragging = false;
-    });
-  </script>
-
+  <script src="js/edit.js"></script>
 </body>
 
 </html>
