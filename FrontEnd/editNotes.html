@@ -253,7 +253,7 @@ textarea {
 
   document.getElementById("editable-heading").innerText = fileName;
   
-  fetch(`markdownFiles/${fileName}.md`)
+  fetch(`markdownFiles/${fileName}.md?v=${Date.now()}`)
       .then(res => res.text())
       .then(md => {
         textarea.value = md;
