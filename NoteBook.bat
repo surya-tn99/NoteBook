@@ -1,9 +1,6 @@
 @echo off
 title NoteBook
 
-REM checking requirements
-pip install -r requirements.txt
-
 echo Starting Flask server on port 1234...
 REM run Flask server
 start cmd /k "cd /d %~dp0backend && python server.py"
