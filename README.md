@@ -8,7 +8,7 @@
 1. Clone the repository:
 
 ```
-git clone https://github.com/your-username/NoteBook.git
+git clone https://github.com/surya-tn99/NoteBook.git
 cd NoteBook
 ````
 
