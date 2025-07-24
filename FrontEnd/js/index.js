@@ -1,4 +1,4 @@
-fetch("http://127.0.0.1:1234/files")
+fetch("/files")
     .then(res => res.json())
     .then(data => {
         const fileList = document.getElementById("fileList");
@@ -58,7 +58,7 @@ function renameNote(oldName) {
     const newName = prompt("Enter new name (without .md):", oldName);
     if (!newName || newName.trim() === "") return;
 
-    fetch("http://127.0.0.1:1234/rename", {
+    fetch("/rename", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ old: oldName, new: newName })
@@ -74,7 +74,7 @@ function renameNote(oldName) {
 function deleteNote(name) {
     if (!confirm(`Delete "${name}"?`)) return;
 
-    fetch("http://127.0.0.1:1234/delete", {
+    fetch("/delete", {
         method: "POST",
         body: name
     })

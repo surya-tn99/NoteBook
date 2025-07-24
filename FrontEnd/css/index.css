@@ -71,19 +71,21 @@ header h1 {
 }
 
 .actions button {
-    background-color: #1a3d68;
-    border: 1px solid #1a3d68;
-    color: white;
-    padding: 5px 10px;
-    font-size: 0.9rem;
+    background-color: transparent;
+    border: 1px solid transparent;
+    color: #1a3d68;
+    padding: 0px;
+    font-size: 0.95rem;
+    font-weight: 600;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 .actions button:hover {
-    background-color: #1b314b;
+    background-color: #1b314b00;
 }
+
 .add-note-btn {
 background-color: #1a3d68;
 border: none;

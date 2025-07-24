@@ -36,7 +36,7 @@ document.querySelector(".update").addEventListener("click", () => {
     // alert("Update clicked!");
 // const NewfileName = document.getElementById("editable-heading").value;
 document.getElementById("editable-heading").textContent = fileName;
-    fetch("http://127.0.0.1:1234/update", {
+    fetch("/update", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"

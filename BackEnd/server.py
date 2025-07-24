@@ -1,9 +1,15 @@
-from flask import Flask , request , jsonify
-from flask_cors import CORS
+from flask import Flask , send_from_directory , request ,jsonify
 import os
 
-server = Flask(__name__)
-CORS(server)
+server = Flask(__name__ , static_folder="../frontend" ,
+               static_url_path="")
+
+@server.route("/")
+def index():
+
+    print("\n\n  * * * index * * * \n\n")
+
+    return send_from_directory("../frontend","index.html")
 
 folder_path = os.path.join(os.path.dirname(__file__), "../FrontEnd/markdownFiles")
     
@@ -13,7 +19,6 @@ def list_files():
     # if markdown files folder does not exist then create it 
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-
 
     try:
         files = [
@@ -30,6 +35,38 @@ def list_files():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+
+@server.route("/add", methods = ["POST"])
+def addFile():
+    data = request.get_json()
+    filename = data.get("filename")
+    content = data.get("content")
+    
+    print("\n* * * inside the add * * *\n")
+
+    if not filename or not content:
+        print("\n* * * no data from browser * * *\n")
+        return "empty dataset"
+
+    # file path
+    path = os.path.join(folder_path, f"{filename}.md")
+
+    if os.path.exists(path):
+        print("\n* * * file already exist * * *\n")
+        return "file already exist"
+    
+    try:
+
+        with open(path,"w",encoding="utf-8") as file:
+            file.write(content)
+    
+        return "added successfully"
+    
+    except Exception as err:
+        print("error --> ",err)
+        return "not added , because of error"
+
+
 @server.route("/rename", methods=["POST"])
 def rename_file():
     try:
@@ -58,6 +95,19 @@ def rename_file():
         print("Rename failed:", e)
         return "Internal server error", 500
 
+
+@server.route("/delete", methods = ["POST"])
+def deleteFile():
+    fileName = request.data.decode("utf-8").strip()
+    path = os.path.join(folder_path, f"{fileName}.md")
+    try:
+        os.remove(path)
+        return "deleted"
+    except FileNotFoundError as err:
+        print("file is not found -> ",err)
+        return "not deleted"
+
+
 @server.route("/update", methods = ["POST"])
 def updateFile():
     data = request.get_json()
@@ -79,16 +129,6 @@ def updateFile():
         print("error --> ",err)
         return "not updated"
 
-@server.route("/delete", methods = ["POST"])
-def deleteFile():
-    fileName = request.data.decode("utf-8").strip()
-    path = os.path.join(folder_path, f"{fileName}.md")
-    try:
-        os.remove(path)
-        return "deleted"
-    except FileNotFoundError as err:
-        print("file is not found -> ",err)
-        return "not deleted"
 
 if __name__ == "__main__":
-    server.run(port = 1234)
+    server.run(port=1234)

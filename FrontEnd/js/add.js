@@ -19,17 +19,17 @@ if (e.key === "Tab") {
 }
 });
 
-// 🔁 HOME button -> redirect to "/"
+// HOME button -> redirect to "/"
 document.querySelector("[title='Home']").addEventListener("click", () => {
 window.location.href = "/";
 });
 
-// 🔁 CANCEL button -> redirect to "/"
+// CANCEL button -> redirect to "/"
 document.querySelector(".cancel").addEventListener("click", () => {
 window.location.href = "/";
 });
 
-// ✅ ADD button -> save file
+// ADD button -> save file
 document.querySelector(".add").addEventListener("click", () => {
 const fileName = document.getElementById("editable-heading").value.trim();
 const content = textarea.value.trim();
@@ -39,15 +39,25 @@ if (!fileName) {
     return;
 }
 
-fetch("http://127.0.0.1:1234/update", {
+fetch("/add", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ filename: fileName, content: content })
 })
     .then(res => res.text())
     .then(msg => {
-    // alert(msg);
-    window.location.href = `/viewNotes.html?name=${encodeURIComponent(fileName)}`;
+    if(msg == "file already exist"){
+        alert("File Name Already Exist\nCurrent Filename : "+fileName);
+    }
+    else if(msg == "empty dataset"){
+        alert("File Should Not be Empty")
+    }
+    else if(msg == "added successfully"){
+        window.location.href = `/viewNotes.html?name=${encodeURIComponent(fileName)}`;
+    }
+    else{
+        alert("ERROR \n what happening , i cannot processed...\n\n");
+    }
     })
     .catch(err => {
     console.error("Error saving file:", err);
