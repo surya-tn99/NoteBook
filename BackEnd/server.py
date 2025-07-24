@@ -7,8 +7,6 @@ server = Flask(__name__ , static_folder="../frontend" ,
 @server.route("/")
 def index():
 
-    print("\n\n  * * * index * * * \n\n")
-
     return send_from_directory("../frontend","index.html")
 
 folder_path = os.path.join(os.path.dirname(__file__), "../FrontEnd/markdownFiles")
@@ -42,17 +40,16 @@ def addFile():
     filename = data.get("filename")
     content = data.get("content")
     
-    print("\n* * * inside the add * * *\n")
 
     if not filename or not content:
-        print("\n* * * no data from browser * * *\n")
+        print(" ~ no data from browser")
         return "empty dataset"
 
     # file path
     path = os.path.join(folder_path, f"{filename}.md")
 
     if os.path.exists(path):
-        print("\n* * * file already exist * * *\n")
+        print(" ~ file already exist")
         return "file already exist"
     
     try:
@@ -92,7 +89,7 @@ def rename_file():
         return "Renamed"
 
     except Exception as e:
-        print("Rename failed:", e)
+        print(" ~ Rename failed:", e)
         return "Internal server error", 500
 
 
@@ -104,7 +101,7 @@ def deleteFile():
         os.remove(path)
         return "deleted"
     except FileNotFoundError as err:
-        print("file is not found -> ",err)
+        print(" ~ file is not found -> ",err)
         return "not deleted"
 
 
@@ -126,7 +123,7 @@ def updateFile():
         return "updated"
     
     except Exception as err:
-        print("error --> ",err)
+        print(" ~ error --> ",err)
         return "not updated"
 
 
