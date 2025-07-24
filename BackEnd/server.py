@@ -9,13 +9,24 @@ folder_path = os.path.join(os.path.dirname(__file__), "../FrontEnd/markdownFiles
     
 @server.route("/files", methods=["GET"])
 def list_files():
+
+    # if markdown files folder does not exist then create it 
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+
     try:
         files = [
-            f[:-3]  # remove .md extension
+            (f[:-3],  # remove .md extension
+            os.path.getmtime(os.path.join(folder_path , f))
+            )
             for f in os.listdir(folder_path)
             if f.endswith(".md")
         ]
-        return jsonify(files)
+        # sort the files list based on modify date and time
+        sorted_files_list =[f[0] for f in  sorted(files , key=lambda x : x[1] , reverse= True )]
+    
+        return jsonify(sorted_files_list)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
