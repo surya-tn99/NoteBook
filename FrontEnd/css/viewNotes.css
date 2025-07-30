@@ -61,6 +61,7 @@ header h1 {
     width: 100%;
     background-color: #f7f8f8;
     overflow-y: auto;
+    margin-bottom: 40px;
 }
 
 .markdown-body {
@@ -99,4 +100,7 @@ header h1 {
 }
 .trash{
     fill: #ffffff;
+}
+#preview{
+    margin-bottom: 300px;
 }
